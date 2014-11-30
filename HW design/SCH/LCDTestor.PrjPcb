@@ -56,10 +56,6 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 
-[GeneratedDocument1]
-DocumentPath=..\..\..\zb-r.PcbDoc.htm
-DItemRevisionGUID=
-
 [Generic_SmartPDF]
 AutoOpenFile=0
 AutoOpenOutJob=-1
