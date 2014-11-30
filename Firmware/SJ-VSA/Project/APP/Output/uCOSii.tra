@@ -1,0 +1,55 @@
+*** Creating Trace Output File '.\APP\Output\uCOSii.tra' Ok.
+### Preparing for ADS-LD.
+### Creating ADS-LD Command Line
+### List of Objects: adding '".\app\output\main.o"'
+### List of Objects: adding '".\app\output\stm32f10x_it.o"'
+### List of Objects: adding '".\app\output\bsp.o"'
+### List of Objects: adding '".\app\output\spi.o"'
+### List of Objects: adding '".\app\output\serial.o"'
+### List of Objects: adding '".\app\output\lights.o"'
+### List of Objects: adding '".\app\output\lcd_hsd080.o"'
+### List of Objects: adding '".\app\output\cpu_a.o"'
+### List of Objects: adding '".\app\output\os_cpu_a.o"'
+### List of Objects: adding '".\app\output\os_cpu_c.o"'
+### List of Objects: adding '".\app\output\os_core.o"'
+### List of Objects: adding '".\app\output\os_flag.o"'
+### List of Objects: adding '".\app\output\os_mbox.o"'
+### List of Objects: adding '".\app\output\os_mem.o"'
+### List of Objects: adding '".\app\output\os_mutex.o"'
+### List of Objects: adding '".\app\output\os_q.o"'
+### List of Objects: adding '".\app\output\os_sem.o"'
+### List of Objects: adding '".\app\output\os_task.o"'
+### List of Objects: adding '".\app\output\os_time.o"'
+### List of Objects: adding '".\app\output\os_tmr.o"'
+### List of Objects: adding '".\app\output\stm32f10x_usart.o"'
+### List of Objects: adding '".\app\output\misc.o"'
+### List of Objects: adding '".\app\output\stm32f10x_exti.o"'
+### List of Objects: adding '".\app\output\stm32f10x_flash.o"'
+### List of Objects: adding '".\app\output\stm32f10x_fsmc.o"'
+### List of Objects: adding '".\app\output\stm32f10x_gpio.o"'
+### List of Objects: adding '".\app\output\stm32f10x_rcc.o"'
+### List of Objects: adding '".\app\output\stm32f10x_spi.o"'
+### List of Objects: adding '".\app\output\stm32f10x_adc.o"'
+### List of Objects: adding '".\app\output\stm32f10x_dma.o"'
+### List of Objects: adding '".\app\output\stm32f10x_tim.o"'
+### List of Objects: adding '".\app\output\stm32f10x_bkp.o"'
+### List of Objects: adding '".\app\output\stm32f10x_rtc.o"'
+### List of Objects: adding '".\app\output\stm32f10x_pwr.o"'
+### List of Objects: adding '".\app\output\core_cm3.o"'
+### List of Objects: adding '".\app\output\system_stm32f10x.o"'
+### List of Objects: adding '".\app\output\startup_stm32f10x_hd.o"'
+### ADS-LD Command completed:
+--device DARMSTM ".\app\output\main.o" ".\app\output\stm32f10x_it.o" ".\app\output\bsp.o" ".\app\output\spi.o" ".\app\output\serial.o" ".\app\output\lights.o" ".\app\output\lcd_hsd080.o" ".\app\output\cpu_a.o" ".\app\output\os_cpu_a.o" ".\app\output\os_cpu_c.o" ".\app\output\os_core.o" ".\app\output\os_flag.o" ".\app\output\os_mbox.o" ".\app\output\os_mem.o" ".\app\output\os_mutex.o" ".\app\output\os_q.o" ".\app\output\os_sem.o" ".\app\output\os_task.o" ".\app\output\os_time.o" ".\app\output\os_tmr.o" ".\app\output\stm32f10x_usart.o" ".\app\output\misc.o" ".\app\output\stm32f10x_exti.o" ".\app\output\stm32f10x_flash.o" ".\app\output\stm32f10x_fsmc.o" ".\app\output\stm32f10x_gpio.o" ".\app\output\stm32f10x_rcc.o" ".\app\output\stm32f10x_spi.o" ".\app\output\stm32f10x_adc.o" ".\app\output\stm32f10x_dma.o" ".\app\output\stm32f10x_tim.o" ".\app\output\stm32f10x_bkp.o" ".\app\output\stm32f10x_rtc.o" ".\app\output\stm32f10x_pwr.o" ".\app\output\core_cm3.o" ".\app\output\system_stm32f10x.o" ".\app\output\startup_stm32f10x_hd.o" --strict --scatter ".\APP\Output\uCOSii.sct" 
+--autoat --summary_stderr --info summarysizes --map --xref --callgraph --symbols 
+--info sizes --info totals --info unused --info veneers 
+ --list ".\APP\Output\uCOSii.map" -o ".\APP\Output\uCOSii.axf"### Preparing Environment (PrepEnvAds)
+### ADS-LD Output File: '.\APP\Output\uCOSii.axf'
+### ADS-LD Command File: '.\APP\Output\uCOSii.lnp'
+### Checking for dirty Components...
+### Creating CmdFile '.\APP\Output\uCOSii.lnp', Handle=0x000001BC
+### Writing '.lnp' file
+### ADS-LD Command file '.\APP\Output\uCOSii.lnp' is ready.
+### ADS-LD: About to start ADS-LD Thread.
+### ADS-LD: executed with 0 errors
+### Updating obj list
+### LDADS_file() completed.

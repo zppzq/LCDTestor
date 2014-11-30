@@ -1,0 +1,11 @@
+#ifndef __APP_MAIN_H_
+#define __APP_MAIN_H_
+
+#define POWER_SWITCH_PORT		GPIOC
+#define POWER_SWITCH_PIN		GPIO_Pin_3
+#define POWER_SWITCH_CHECK_PORT	GPIOC
+#define POWER_SWITCH_CHECK_PIN	GPIO_Pin_2
+#define POWER_LED_PORT			GPIOF
+#define POWER_LED_PIN			GPIO_Pin_11
+#define TIMEOUT_ONE_SEC	1000
+#endif

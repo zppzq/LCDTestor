@@ -1,0 +1,701 @@
+/****************************************Copyright (c)**************************************************
+**                              
+**                                 
+**                                  
+**--------------文件信息--------------------------------------------------------------------------------
+**文   件   名: ADS1246.c
+**创   建   人: 罗仕强
+**创 建 日  期: 2009年4月14日
+**最后修改日期: 2009年4月24日
+**描        述: 
+********************************************************************************************************/
+#define _ADS1246_C_
+
+#include "..\global.h"
+#include "ADS1246.h"
+#include "AD_DAInterface.h"
+
+
+//信号定义**********************************************************************************************
+//ADS1246电源开关
+#define ADPWEN_PORT		PORT(2)
+#define ADPWEN				BIT(2)
+
+//ADS1246复位信号
+#define ADRESET_PORT		PORT(2)
+#define ADRESET				BIT(1)
+
+//ADS1246AD片选信号
+#define ADCS_PORT			PORT(1)
+#define ADCS					BIT(6)
+
+//ADS1246AD完成信号
+#define ADRDY_PORT			PORT(0)
+#define ADRDY				BIT(6)
+
+//ADS1246AD开始信号
+#define ADSTART_PORT		PORT(1)
+#define ADSTART				BIT(7)
+
+//通道1传感器电源控制
+#define POWER_CH1_PORT	PORT(2)
+#define POWER_CH1			BIT(0)
+
+#if 0
+//通道2传感器电源控制
+#define POWER_CH2_PORT	PORT(1)
+#define POWER_CH2			BIT(4)
+
+//通道3传感器电源控制
+#define POWER_CH3_PORT	PORT(0)
+#define POWER_CH3			BIT(3)
+
+//通道4传感器电源控制
+#define POWER_CH4_PORT	PORT(0)
+#define POWER_CH4			BIT(2)
+#endif
+//数据定义***********************************************************************
+static OS_EVENT 	*pADS1246Event;			//事件控制块
+static uint16 		nADS1246TimeOut;			//接受超时时间
+static uint8 		nADS1246Err;				//错误标志
+
+//参数
+//for ADS1246--------------------------------
+static int32 bdata ADS1246Shift32S;			//ADS1246移位寄存器
+static bit ADS1246ShiftLSB;
+
+static uint8 xdata nADDataStatus;			//记录当前数据状态，AD_DATA_STATUS_E
+static uint8 xdata nADOffsetCalibration;		//记录偏差校准状态
+static uint8 xdata nADStandbyMode;			//记录低功耗模式状态
+static uint8 xdata g_nADS1246Gain[SENSOR_MAX_COUNT];			//记录当前增益
+static uint8 xdata g_nADS1246SpeedCur;		//记录当前采样速率
+static uint8 xdata g_nADS1246SpeedDynamic;	//记录当前动态采样速率
+static uint8 xdata g_nADS1246SpeedStatic;		//记录当前静态采样速率
+static uint8 xdata g_nActiveChannel;			//记录当前操作通道号
+
+
+//宏定义**********************************************************************************************
+//开关ADS1246电源，POWER_DOWN会使AD复位
+#define ADS1246_POWER_ON() 		SetHi(ADPWEN)
+#define ADS1246_POWER_OFF() 		SetLo(ADPWEN)
+
+#define ADSENSOR_POWER_ON() 		SetHi(POWER_CH1)
+#define ADSENSOR_POWER_OFF()	 	SetLo(POWER_CH1)
+
+#define NOP		_nop_();_nop_();_nop_()
+
+#define BREAD 		1			// 读		
+#define BWRITE		0			// 写  
+
+#define CLOSE_ALL_SENSOR_POWER()	\
+do{\
+	SetLo(POWER_CH1);\
+//	SetLo(POWER_CH2);\
+//	SetLo(POWER_CH3);\
+//	SetLo(POWER_CH4);\
+}while(0)
+
+
+/****************************************************************************
+* 名	称：ADS1246_rw()
+* 功	能：ADS1246 spi 读写操作
+* 入口参数：无
+* 出口参数：无
+* 说	明：无
+****************************************************************************/
+static void ADS1246_PwInit()
+{
+#ifndef	ADRESET
+	//使用RESET命令
+	uint8 tmp;
+	SetLo(ADCS);
+	spi_rw(ADS1246_RESET);
+	SetHi(ADCS);	
+	//延时0.6ms
+	spi_rw(ADS1246_PO_INIT);
+	OSTimeDly(1);	
+#else
+	//使用RESET信号线
+	SetLo(ADRESET);		
+	OSTimeDly(1);		//ADRESET下跳延时10ms
+	SetHi(ADRESET);
+#endif
+}
+
+/****************************************************************************
+* 名	称：ADS1246ReadReg()
+* 功	能：ADS1246读写寄存器
+* 入口参数：无
+* 出口参数：无
+* 说	明：无
+****************************************************************************/
+static void ADS1246RWReg(uint8 nReg,uint8 nLen,uint8 *pReg,BOOL bRW)
+{
+	uint8 i;
+	if(BWRITE == bRW) nReg |= ADS1246_WREG;
+	else if(BREAD == bRW) nReg |= ADS1246_RREG;
+	
+	SetLo(ADCS);
+	spi_rw(nReg);
+	spi_rw(nLen);
+	for(i=0;i<nLen;i++)
+	{
+		if(BWRITE == bRW)
+		{
+			spi_rw(*(pReg+i));
+		}
+		else if(BREAD == bRW)
+		{
+			*(pReg+i) = spi_rw(ADS1246_NOP);
+		}
+	}
+	SetHi(ADCS);
+}
+
+/****************************************************************************
+* 名	称：ADS1246PortInit()
+* 功	能：ADS1246初始化函数
+* 入口参数：无
+* 出口参数：无
+* 说	明：无
+****************************************************************************/
+void ADS1246PortInit() reentrant
+{
+	MakePushPull(ADPWEN);
+	MakePushPull(ADRESET);
+	MakePushPull(ADCS);
+	MakeOpenDrain(ADRDY);
+	MakePushPull(ADSTART);
+	MakePushPull(POWER_CH1);
+
+	ADS1246_POWER_OFF();		//关闭AD电源
+	ADSENSOR_POWER_OFF();	//关闭传感器电源
+	
+	//中断初始化
+	IT1 = 0;					//电平触发
+	IT01CF &= 0x0F;				//低电压有效
+	IT01CF |= (GetBitValue(ADRDY) << 4);
+	EX1 = 0;					//关闭中断
+
+	SetHi(ADRESET);
+	SetHi(ADCS);
+	SetLo(ADRDY);
+	SetLo(ADSTART);
+}
+/****************************************************************************
+* 名	称：ADS1246VariInit()
+* 功	能：ADS1246全局变量初始化函数
+* 入口参数：无
+* 出口参数：无
+* 说	明：无
+****************************************************************************/
+void ADS1246VariInit() reentrant
+{
+	pADS1246Event = NULL;
+	nADS1246TimeOut = 100;		//超时时间100*10ms
+	//创建信号量
+	if(pADS1246Event == NULL) 
+	{
+		pADS1246Event = OSSemCreate(0);
+	}
+
+	g_nADS1246SpeedStatic = AD_SPEED_SELECT_10SPS;
+	DataInit(g_nADS1246Gain,AD_GAIN_SELECT_1);
+	g_nActiveChannel = AD_CHANNEL_SELECT_1;
+}
+
+/****************************************************************************
+* 名	称：ADS1246GainSelect()
+* 功	能：ADS1246增益选择函数
+* 入口参数：nGainSelect ：选择的增益，范围：AD_GAIN_SELECT_E
+* 出口参数：无
+* 说	明：无
+****************************************************************************/
+static void ADS1246GainSelect(const uint8 nGainSelect) reentrant
+{
+	uint8 tmp;
+	fp32 n;
+	n  = F_ADS1246_STEP;
+	g_nADS1246Gain[g_nActiveChannel] = nGainSelect;
+	SetLo(ADCS);
+	ADS1246RWReg(ADS1246_SYS0, 1,&tmp,BREAD);
+	tmp &= 0x0F;
+	tmp += (nGainSelect << 4);
+	ADS1246RWReg(ADS1246_SYS0, 1,&tmp,BWRITE);
+	SetHi(ADCS);
+}
+
+/****************************************************************************
+* 名	称：ADS1246SpeedSelect()
+* 功	能：ADS1246采样速率选择函数
+* 入口参数：nSpeedSelect ：选择采样速率，范围：AD_SPEED_SELECT_E
+* 出口参数：无
+* 说	明：采样率为10SPS时，转换时间为401ms；采样率为80SPS时，转换时间为51ms
+****************************************************************************/
+static void ADS1246SpeedSelect(const uint8 nSpeedSelect) reentrant
+{
+	uint8 tmp;
+	g_nADS1246SpeedCur = nSpeedSelect;
+	SetLo(ADCS);
+	ADS1246RWReg(ADS1246_SYS0, 1,&tmp,BREAD);
+	tmp &= 0xF0;
+	tmp += nSpeedSelect;
+	ADS1246RWReg(ADS1246_SYS0, 1,&tmp,BWRITE);
+	SetHi(ADCS);
+}
+/****************************************************************************
+* 名	称：ADS1246SetParam()
+* 功	能：ADS1246设置参数
+* 入口参数：待设置的参数地址
+* 出口参数：无
+* 说	明：无
+****************************************************************************/
+static uint8 ADS1246GetSpeed(uint16 nSpeed) 
+{
+	if(1000 < nSpeed)		return AD_SPEED_SELECT_2000SPS; 
+	else if(640 < nSpeed)	return AD_SPEED_SELECT_1000SPS; 
+	else if(320 < nSpeed)	return AD_SPEED_SELECT_640SPS; 
+	else if(160 < nSpeed)	return AD_SPEED_SELECT_320SPS; 
+	else if(80 < nSpeed)	return AD_SPEED_SELECT_160SPS; 
+	else if(40 < nSpeed)	return AD_SPEED_SELECT_80SPS; 
+	else if(20 < nSpeed) 	return AD_SPEED_SELECT_40SPS; 
+	else if(10 < nSpeed) 	return AD_SPEED_SELECT_20SPS; 
+	else if(5 < nSpeed) 	return AD_SPEED_SELECT_10SPS;
+	else return AD_SPEED_SELECT_5SPS;
+	}
+/****************************************************************************
+* 名	称：ADS1246SetParam()
+* 功	能：ADS1246设置参数
+* 入口参数：待设置的参数地址
+* 出口参数：无
+* 说	明：无
+****************************************************************************/
+#ifdef _ADS1246_SET_PARAM_
+void ADS1246SetParam(const fp32* pParam,uint8 nChannelID) reentrant
+{
+	uint16	nADSpeed;
+	g_nActiveChannel = nChannelID;
+	nADSpeed = (uint16)pParam[0];
+
+	//记录动态采样速率
+	g_nADS1246SpeedDynamic = ADS1246GetSpeed(nADSpeed);
+}
+#endif
+
+/****************************************************************************
+* 名	称：ADS1246StandbyModeEnter()
+* 功	能：ADS1246进入低功耗模式
+* 入口参数：无
+* 出口参数：无
+* 说	明：无
+****************************************************************************/
+#ifdef _ADS1246_STANDBY_MODE_
+void ADS1246StandbyModeEnter() reentrant
+{
+	nADStandbyMode = AD_STANDBY_MODE_TRUE;
+}
+#endif
+/****************************************************************************
+* 名	称：ADS1246StandbyModeExit()
+* 功	能：ADS1246退出低功耗模式
+* 入口参数：无
+* 出口参数：无
+* 说	明：无
+****************************************************************************/
+#ifdef _ADS1246_STANDBY_MODE_
+void ADS1246StandbyModeExit() reentrant
+{
+	nADStandbyMode = AD_STANDBY_MODE_FALSE;
+	SetLo(ADSCLK);
+}
+#endif
+
+/****************************************************************************
+* 名	称：ADS1246Open()
+* 功	能：打开ADS1246
+* 入口参数：无
+* 出口参数：无
+* 说	明：无
+****************************************************************************/
+void ADS1246Open() reentrant
+{
+	//开AD总电源
+	ADS1246_POWER_ON();
+	//ADS1246芯片初始化
+	OSTimeDly(10);		//上电后，延时100ms
+	ADS1246_PwInit();	//芯片上电复位
+	
+	//参数初始化
+	nADOffsetCalibration = AD_OFFSET_CALIBRATION_HANDLING;		//进行偏差校正	
+}
+/****************************************************************************
+* 名	称：ADS1246Close()
+* 功	能：关闭ADS1246
+* 入口参数：无
+* 出口参数：无
+* 说	明：无
+****************************************************************************/
+void ADS1246Close() reentrant
+{
+	//关闭所有传感器电源
+	ADSENSOR_POWER_OFF();
+	//关AD总电源
+	ADS1246_POWER_OFF();
+	
+	//关外部中断1
+	EX1 = 0;
+}
+
+#if 0
+/****************************************************************************
+* 名	称：PowerOnChannel()
+* 功	能：相应通道传感器上电
+* 入口参数：相应通道号
+* 出口参数：无
+* 说	明：无
+****************************************************************************/
+static void PowerOnChannel(const uint8 nChannelNum) reentrant
+{
+	if(AD_CHANNEL_SELECT_BUTT < nChannelNum) return;
+	switch(nChannelNum)
+	{
+	case AD_CHANNEL_SELECT_1 : 
+		SetHi(POWER_CH1);
+		break;
+	case AD_CHANNEL_SELECT_2 :
+		SetHi(POWER_CH2);
+		break;
+	case AD_CHANNEL_SELECT_3 :
+		SetHi(POWER_CH3);
+		break;
+	case AD_CHANNEL_SELECT_4 :
+		SetHi(POWER_CH4);
+	default : 
+		break;
+	}
+}
+
+/****************************************************************************
+* 名	称：PowerOffChannel()
+* 功	能：相应通道传感器下电
+* 入口参数：相应通道号
+* 出口参数：无
+* 说	明：无
+****************************************************************************/
+static void PowerOffChannel(const uint8 nChannelNum) reentrant
+{
+	if(AD_CHANNEL_SELECT_BUTT < nChannelNum) return;
+	switch(nChannelNum)
+	{
+	case AD_CHANNEL_SELECT_1 : 
+		SetLo(POWER_CH1);
+		break;
+	case AD_CHANNEL_SELECT_2 :
+		SetLo(POWER_CH2);
+		break;
+	case AD_CHANNEL_SELECT_3 :
+		SetLo(POWER_CH3);
+		break;
+	case AD_CHANNEL_SELECT_4 :
+		SetLo(POWER_CH4);
+	default : 
+		break;
+	}
+}
+#endif
+/****************************************************************************
+* 名	称：ADS1246GainCal()
+* 功	能：增益校准
+* 入口参数：无
+* 出口参数：无
+* 说	明：Gain = 1, Gain calibration: VREFP – VREFN (full-scale)
+****************************************************************************/
+#ifdef	_ADS1246_GAIN_CAL_
+void ADS1246GainCal() reentrant 
+{
+	uint32 nGainTmp;
+	uint8 tmp;
+	tmp = 0x02;
+	ADS1246RWReg(ADS1246_MUX1,1,&tmp, BWRITE);
+	SetLo(ADCS);
+	spi_rw(ADS1246_SYSGCAL);
+	SetHi(ADCS);
+	//读数完毕，清除原有中断标志，使能中断
+	IE1 = 0;
+	EX1 = 1;
+	//等待增益校正完成
+	while(TRUE != ADS1246WaitDataReady());
+	SetLo(ADCS);
+	ADS1246RWReg(ADS1246_FSC0,3, (uint8*)(&nGainTmp),BREAD);
+	SetHi(ADCS);
+	//读数完毕，清除原有中断标志，使能中断
+	IE1 = 0;
+	EX1 = 1;
+}
+#endif
+/****************************************************************************
+* 名	称：ADS1246OffsetCal()
+* 功	能：偏差自校正
+* 入口参数：无
+* 出口参数：无
+* 说	明：Offset calibration: inputs shorted to midsupply (AVDD + AVSS)/2
+****************************************************************************/
+#ifdef	_ADS1246_OFFSET_CAL_
+void ADS1246OffsetCal() reentrant 
+{
+	uint32 nOffsetTmp;
+#if 1
+	uint8 tmp;
+	tmp = 0x01;
+	ADS1246RWReg(ADS1246_MUX1,1,&tmp, BWRITE);
+	SetLo(ADCS);
+	//spi_rw(ADS1246_SELFOCAL);
+	spi_rw(ADS1246_SYSOCAL);
+	SetHi(ADCS);
+#else
+	SetLo(ADCS);
+	spi_rw(ADS1246_SELFOCAL);
+	//spi_rw(ADS1246_SYSOCAL);
+	SetHi(ADCS);
+#endif
+	//读数完毕，清除原有中断标志，使能中断
+	IE1 = 0;
+	EX1 = 1;
+	//等待偏差校正完成
+	while(TRUE != ADS1246WaitDataReady());
+	SetLo(ADCS);
+	ADS1246RWReg(ADS1246_OFC0,3, (uint8*)(&nOffsetTmp),BREAD);
+	SetHi(ADCS);
+	//读数完毕，清除原有中断标志，使能中断
+	IE1 = 0;
+	EX1 = 1;
+}
+#endif
+/****************************************************************************
+* 名	称：ADS1246StartSample()
+* 功	能：开始采集
+* 入口参数：开始静态或动态
+* 出口参数：无
+* 说	明：开始采样及切换通道时调用
+****************************************************************************/
+void ADS1246StartSample(uint8 nOrder) reentrant 
+{
+	//开启对应的传感器电源
+	ADSENSOR_POWER_ON();
+	OSTimeDly(10);	//等待电源稳定
+
+	//静态采集
+	if(BRG_PREPARE_STATIC == nOrder)
+	{
+		ADS1246SpeedSelect(g_nADS1246SpeedStatic);		//设置采样率
+	}
+	else if(BRG_DYNC_OPERATION == nOrder)
+	{
+		ADS1246SpeedSelect(g_nADS1246SpeedDynamic);		//设置采样率
+	}
+	
+	//开始采样
+	SetHi(ADSTART);
+	//清除原有中断标志，使能中断
+	IE1 = 0;
+	EX1 = 1;
+
+#ifdef _ADS1246_GAIN_CAL_
+	ADS1246GainCal();		//增益校正
+#endif
+
+	//设置连续读模式
+	ADS1246SetReadC();
+	//自动增益控制，设置合适增益
+	ADS1246AGC();
+
+#ifdef _ADS1246_OFFSET_CAL_
+	ADS1246OffsetCal();
+#endif
+}
+
+/****************************************************************************
+* 名	称：ADS1246StopSample()
+* 功	能：开始采集
+* 入口参数：开始采集的通道号
+* 出口参数：无
+* 说	明：开始采样及切换通道时调用
+****************************************************************************/
+void ADS1246StopSample() reentrant 
+{
+	//关闭对应的传感器电源
+	ADSENSOR_POWER_OFF();
+
+	//停止采集
+	SetLo(ADSTART);
+
+	//清除原有中断标志，禁止中断
+	IE1 = 0;
+	EX1 = 0;
+}
+
+/****************************************************************************
+* 名	称：ADS1246SetReadC()
+* 功	能：ADS1246 设置连续读
+* 入口参数：无
+* 出口参数：无
+* 说	明：无
+****************************************************************************/
+static void ADS1246SetReadC()
+{
+	while(TRUE != ADS1246WaitDataReady());
+	SetLo(ADCS);
+	spi_rw(ADS1246_RDATAC);
+	SetHi(ADCS);
+	//读数完毕，清除原有中断标志，使能中断
+	IE1 = 0;
+	EX1 = 1;
+	
+}
+
+/****************************************************************************
+* 名	称：ADS1246GetValue()
+* 功	能：读取采样结果
+* 入口参数：无
+* 出口参数：采样结果
+* 说	明：读ADC 数据寄存器的内容
+****************************************************************************/
+static int32 ADS1246GetValue()  reentrant
+{
+	uint8 tmp;
+	int32 nADTmp;
+
+	nADTmp = 0;
+	SetLo(ADCS);
+	tmp = spi_rw(ADS1246_NOP);
+	nADTmp |= tmp;
+	nADTmp = (nADTmp << 8);
+	tmp = spi_rw(ADS1246_NOP);
+	nADTmp |= tmp;
+	nADTmp = (nADTmp << 8);
+	tmp = spi_rw(ADS1246_NOP);
+	nADTmp |= tmp;
+	
+	//修改负数情况
+	if(nADTmp & 0x00800000) nADTmp |= 0xFF000000;
+	
+	//读数完毕，清除原有中断标志，使能中断
+	IE1 = 0;
+	EX1 = 1;
+
+	return nADTmp;
+}
+
+/****************************************************************************
+* 名	称：ADS1246GetVol()
+* 功	能：获取采样电压
+* 入口参数：无
+* 出口参数：采样电压，单位mv
+* 说	明：
+****************************************************************************/
+#ifdef	_ADS1246_AGC_
+static void ADS1246AGC() reentrant
+{
+	int32 tmp;
+
+	ADS1246GainSelect(AD_GAIN_SELECT_1);
+	while(TRUE != ADS1246WaitDataReady());				//等待AD转换完成
+	tmp = ADS1246GetValue();
+	if((0xC000 < tmp) || (0xFFFF4000 > tmp))
+	{
+		g_nADS1246Gain[g_nActiveChannel] = AD_GAIN_SELECT_128;
+	}
+	else if((0x18000 < tmp) || (0xFFFE8000 > tmp))
+	{
+		g_nADS1246Gain[g_nActiveChannel] = AD_GAIN_SELECT_64; }
+	else if((0x30000 < tmp) || (0xFFFD0000 > tmp))
+	{
+		g_nADS1246Gain[g_nActiveChannel] = AD_GAIN_SELECT_32;
+	}
+	else if((0x60000 < tmp) || (0xFFFA0000 > tmp))
+	{
+		g_nADS1246Gain[g_nActiveChannel] = AD_GAIN_SELECT_16;
+	}
+	else if((0xC0000 < tmp) || (0xFFF40000 > tmp))
+	{
+		g_nADS1246Gain[g_nActiveChannel] = AD_GAIN_SELECT_8;
+	}
+	else if((0x180000 < tmp) || (0xFFE80000 > tmp))
+	{
+		g_nADS1246Gain[g_nActiveChannel] = AD_GAIN_SELECT_4;
+	}
+	else if((0x300000 < tmp) || (0xFFD00000 > tmp))
+	{
+		g_nADS1246Gain[g_nActiveChannel] = AD_GAIN_SELECT_2;
+	}
+	else
+	{
+		g_nADS1246Gain[g_nActiveChannel] = AD_GAIN_SELECT_1;
+	}
+	ADS1246GainSelect(g_nADS1246Gain[g_nActiveChannel]);
+}
+#endif
+
+/****************************************************************************
+* 名	称：ADS1246IsDataReady()
+* 功	能：获取当前数据状态
+* 入口参数：无
+* 出口参数：TRUE,已准备好；FALSE,未准备好
+* 说	明：
+****************************************************************************/
+static BOOL ADS1246WaitDataReady() reentrant
+{
+	//等待采样完毕
+	OSSemPend(pADS1246Event, nADS1246TimeOut, &nADS1246Err);
+	if(OS_NO_ERR == nADS1246Err) return TRUE;		//数据正常
+	else return FALSE;
+}
+
+/****************************************************************************
+* 名	称：ADS1246GetVol()
+* 功	能：获取采样电压
+* 入口参数：无
+* 出口参数：采样电压，单位mv
+* 说	明：
+****************************************************************************/
+fp32 ADS1246GetVol() reentrant
+{
+	uint8 i = 0;
+	fp32 tmpVol;
+
+	if(TRUE == ADS1246WaitDataReady())				//等待AD转换完成
+	{
+		tmpVol = (float)ADS1246GetValue();			//读取数据
+		if((0x7F0000 < tmpVol) || (0xFF810000 > tmpVol))
+		{
+			//调整到合适增益
+			ADS1246AGC();
+		}
+	}
+	else 
+	{
+		tmpVol = INVALIDFP32;
+	}
+
+	tmpVol =  tmpVol * g_fADStep[g_nActiveChannel] / g_nADS1246Gain[g_nActiveChannel];		//转换为电压
+	return tmpVol;
+}
+
+
+/*****************************************************************************************************************
+* 名	称：Int2ISR()
+* 功	能：ADS1246转换完成中断程序
+* 入口参数：无
+* 出口参数：无
+* 说	明：用外部中断1
+*****************************************************************************************************************/
+void Int2ISR() interrupt 2
+{		 
+	OSIntEnter();				//进入中断
+	EX1 = 0;  					//关外部中断1
+	OSSemPost(pADS1246Event);	
+	OSIntExit();				//退出中断
+}
+
+
+

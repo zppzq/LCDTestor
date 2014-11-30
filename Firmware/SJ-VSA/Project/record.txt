@@ -1,0 +1,18 @@
+注意事项：
+1，调试ADS1246
+    从ADS1246上电到其初始化完成这个过程，一定要全速跑，中间不要下断点，否则初始化不过去
+
+
+
+
+
+修改记录:
+sersor.c	1115行
+sensor.c	787行
+sensor.c	有关bSensorOpen变量的地方被注释掉
+
+Si4432.c	Si4432Send()里的nIdMask被注释掉
+
+ADS1246.c	ADS1246VariInit()里的nADS1246TimeOut = 100;被注释掉
+
+

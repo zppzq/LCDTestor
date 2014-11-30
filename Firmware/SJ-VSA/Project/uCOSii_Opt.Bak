@@ -1,0 +1,134 @@
+### uVision2 Project, (C) Keil Software
+### Do not modify !
+
+ cExt (*.c)
+ aExt (*.s*; *.src; *.a*)
+ oExt (*.obj)
+ lExt (*.lib)
+ tExt (*.txt; *.h; *.inc)
+ pExt (*.plm)
+ CppX (*.cpp)
+ DaveTm { 0,0,0,0,0,0,0,0 }
+
+Target (Z32R), 0x0004 // Tools: 'ARM-ADS'
+GRPOPT 1,(User),1,0,0
+GRPOPT 2,(BSP),1,0,0
+GRPOPT 3,(CortexM3),0,0,0
+GRPOPT 4,(uCOS),0,0,0
+GRPOPT 5,(StdPeriph_Driver),0,0,0
+GRPOPT 6,(CMSIS),0,0,0
+GRPOPT 7,(RVMDK),0,0,0
+GRPOPT 8,(ColBus),1,0,0
+GRPOPT 9,(Communication),0,0,0
+GRPOPT 10,(Memorizer),1,0,0
+GRPOPT 11,(Wireless),1,0,0
+GRPOPT 12,(AD_DA),1,0,0
+GRPOPT 13,(Disk),1,0,0
+GRPOPT 14,(DS18B20),1,0,0
+
+OPTFFF 1,1,1,218103808,0,211,211,0,<..\User\main.c><main.c> { 44,0,0,0,0,0,0,0,1,0,0,0,255,255,255,255,255,255,255,255,252,255,255,255,226,255,255,255,22,0,0,0,29,0,0,0,6,4,0,0,89,1,0,0 }
+OPTFFF 1,2,1,0,0,0,0,0,<..\User\stm32f10x_it.c><stm32f10x_it.c> 
+OPTFFF 1,3,5,0,0,0,0,0,<..\User\stm32f10x_conf.h><stm32f10x_conf.h> 
+OPTFFF 1,4,5,0,0,0,0,0,<..\User\stm32f10x_it.h><stm32f10x_it.h> 
+OPTFFF 1,5,5,0,0,0,0,0,<.\record.txt><record.txt> 
+OPTFFF 1,6,1,117440512,0,103,103,0,<..\User\DataAcq.c><DataAcq.c> { 44,0,0,0,0,0,0,0,1,0,0,0,255,255,255,255,255,255,255,255,252,255,255,255,226,255,255,255,110,0,0,0,145,0,0,0,94,4,0,0,253,1,0,0 }
+OPTFFF 1,7,1,419430400,0,183,194,0,<..\User\CommApp.c><CommApp.c> { 44,0,0,0,0,0,0,0,1,0,0,0,255,255,255,255,255,255,255,255,252,255,255,255,226,255,255,255,44,0,0,0,58,0,0,0,28,4,0,0,155,1,0,0 }
+OPTFFF 1,8,1,234881024,0,0,0,0,<..\User\DataManage.c><DataManage.c> 
+OPTFFF 1,9,1,0,0,73,73,0,<..\User\SyncTimer.c><SyncTimer.c> { 44,0,0,0,0,0,0,0,1,0,0,0,255,255,255,255,255,255,255,255,252,255,255,255,226,255,255,255,88,0,0,0,116,0,0,0,72,4,0,0,224,1,0,0 }
+OPTFFF 1,10,5,469762048,0,0,0,0,<..\User\SyncTimer.h><SyncTimer.h> 
+OPTFFF 1,11,1,0,0,0,0,0,<..\User\PowerManager.c><PowerManager.c> 
+OPTFFF 1,12,5,436207616,0,1,1,0,<..\User\PowerManager.h><PowerManager.h> { 44,0,0,0,0,0,0,0,1,0,0,0,255,255,255,255,255,255,255,255,252,255,255,255,226,255,255,255,88,0,0,0,116,0,0,0,72,4,0,0,213,1,0,0 }
+OPTFFF 2,13,1,0,0,0,0,0,<..\SDK\BSP\bsp.c><bsp.c> 
+OPTFFF 2,14,1,1241513984,0,0,0,0,<..\SDK\BSP\spi.c><spi.c> 
+OPTFFF 2,15,1,0,0,0,0,0,<..\SDK\BSP\Serial.c><Serial.c> 
+OPTFFF 2,16,1,33554432,0,123,123,0,<..\SDK\BSP\Lights.c><Lights.c> { 44,0,0,0,0,0,0,0,1,0,0,0,255,255,255,255,255,255,255,255,252,255,255,255,226,255,255,255,0,0,0,0,0,0,0,0,240,3,0,0,97,1,0,0 }
+OPTFFF 2,17,1,67108864,0,0,0,0,<..\SDK\BSP\LowPower.c><LowPower.c> 
+OPTFFF 2,18,1,83886080,0,74,74,0,<..\SDK\BSP\PowerKey.c><PowerKey.c> { 44,0,0,0,0,0,0,0,1,0,0,0,255,255,255,255,255,255,255,255,252,255,255,255,226,255,255,255,22,0,0,0,29,0,0,0,6,4,0,0,126,1,0,0 }
+OPTFFF 3,19,2,0,0,0,0,0,<..\CortexM3\cpu_a.asm><cpu_a.asm> 
+OPTFFF 3,20,2,503316480,0,0,0,0,<..\CortexM3\os_cpu_a.asm><os_cpu_a.asm> 
+OPTFFF 3,21,1,0,0,0,0,0,<..\CortexM3\os_cpu_c.c><os_cpu_c.c> 
+OPTFFF 4,22,1,335544320,0,0,0,0,<..\uCOS\os_core.c><os_core.c> 
+OPTFFF 4,23,1,0,0,0,0,0,<..\uCOS\os_flag.c><os_flag.c> 
+OPTFFF 4,24,1,0,0,0,0,0,<..\uCOS\os_mbox.c><os_mbox.c> 
+OPTFFF 4,25,1,0,0,0,0,0,<..\uCOS\os_mem.c><os_mem.c> 
+OPTFFF 4,26,1,0,0,0,0,0,<..\uCOS\os_mutex.c><os_mutex.c> 
+OPTFFF 4,27,1,0,0,0,0,0,<..\uCOS\os_q.c><os_q.c> 
+OPTFFF 4,28,1,100663296,0,0,0,0,<..\uCOS\os_sem.c><os_sem.c> 
+OPTFFF 4,29,1,452984832,0,0,0,0,<..\uCOS\os_task.c><os_task.c> 
+OPTFFF 4,30,1,0,0,0,0,0,<..\uCOS\os_time.c><os_time.c> 
+OPTFFF 4,31,1,0,0,0,0,0,<..\uCOS\os_tmr.c><os_tmr.c> 
+OPTFFF 5,32,1,0,0,0,0,0,<..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_usart.c><stm32f10x_usart.c> 
+OPTFFF 5,33,1,83886080,0,0,0,0,<..\Libraries\STM32F10x_StdPeriph_Driver\src\misc.c><misc.c> 
+OPTFFF 5,34,1,0,0,0,0,0,<..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_exti.c><stm32f10x_exti.c> 
+OPTFFF 5,35,1,0,0,0,0,0,<..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_flash.c><stm32f10x_flash.c> 
+OPTFFF 5,36,1,0,0,0,0,0,<..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_fsmc.c><stm32f10x_fsmc.c> 
+OPTFFF 5,37,1,436207616,0,0,0,0,<..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_gpio.c><stm32f10x_gpio.c> 
+OPTFFF 5,38,1,922746880,0,0,0,0,<..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rcc.c><stm32f10x_rcc.c> 
+OPTFFF 5,39,1,503316480,0,0,0,0,<..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_spi.c><stm32f10x_spi.c> 
+OPTFFF 5,40,1,0,0,0,0,0,<..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_adc.c><stm32f10x_adc.c> 
+OPTFFF 5,41,1,905969664,0,0,0,0,<..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_dma.c><stm32f10x_dma.c> 
+OPTFFF 5,42,1,436207616,0,0,0,0,<..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_tim.c><stm32f10x_tim.c> 
+OPTFFF 5,43,1,0,0,0,0,0,<..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_bkp.c><stm32f10x_bkp.c> 
+OPTFFF 5,44,1,0,0,0,0,0,<..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_rtc.c><stm32f10x_rtc.c> 
+OPTFFF 5,45,1,0,0,0,0,0,<..\Libraries\STM32F10x_StdPeriph_Driver\src\stm32f10x_pwr.c><stm32f10x_pwr.c> 
+OPTFFF 6,46,1,838860800,0,0,0,0,<..\Libraries\CMSIS\Core\CM3\core_cm3.c><core_cm3.c> 
+OPTFFF 6,47,1,1845493760,0,0,0,0,<..\Libraries\CMSIS\Core\CM3\system_stm32f10x.c><system_stm32f10x.c> 
+OPTFFF 7,48,2,0,0,0,0,0,<..\Libraries\CMSIS\Core\CM3\startup\arm\startup_stm32f10x_hd.s><startup_stm32f10x_hd.s> 
+OPTFFF 8,49,1,0,0,0,0,0,<..\ColBus\ColBusMisc.c><ColBusMisc.c> 
+OPTFFF 8,50,1,301989890,0,172,189,0,<..\ColBus\ColBusSlaveAps.c><ColBusSlaveAps.c> { 44,0,0,0,2,0,0,0,3,0,0,0,255,255,255,255,255,255,255,255,252,255,255,255,226,255,255,255,110,0,0,0,145,0,0,0,94,4,0,0,242,1,0,0 }
+OPTFFF 8,51,1,150994944,0,0,0,0,<..\ColBus\ColBusSlaveDescribe.c><ColBusSlaveDescribe.c> 
+OPTFFF 8,52,1,268435456,0,0,0,0,<..\ColBus\ColBusSlaveMac.c><ColBusSlaveMac.c> 
+OPTFFF 8,53,1,234881024,0,0,0,0,<..\ColBus\CrcCheck.c><CrcCheck.c> 
+OPTFFF 8,54,1,268435456,0,0,0,0,<..\ColBus\nwk.c><nwk.c> 
+OPTFFF 11,55,5,134217728,0,0,0,0,<..\SDK\Wireless\Si4432.h><Si4432.h> 
+OPTFFF 11,56,5,134217728,0,0,0,0,<..\SDK\Wireless\WirelessInterface.h><WirelessInterface.h> 
+OPTFFF 11,57,1,0,0,0,0,0,<..\SDK\Wireless\Nrzi.c><Nrzi.c> 
+OPTFFF 11,58,5,0,0,0,0,0,<..\SDK\Wireless\Nrzi.h><Nrzi.h> 
+OPTFFF 12,59,5,33554432,0,0,0,0,<..\SDK\AD_DA\ADS1246.h><ADS1246.h> 
+OPTFFF 12,60,5,134217728,0,26,32,0,<..\SDK\AD_DA\AD_DAInterface.h><AD_DAInterface.h> { 44,0,0,0,0,0,0,0,1,0,0,0,255,255,255,255,255,255,255,255,252,255,255,255,226,255,255,255,88,0,0,0,116,0,0,0,72,4,0,0,213,1,0,0 }
+OPTFFF 12,61,1,1040187392,0,517,517,0,<..\SDK\AD_DA\ADS1246.c><ADS1246.c> { 44,0,0,0,0,0,0,0,1,0,0,0,255,255,255,255,255,255,255,255,252,255,255,255,226,255,255,255,110,0,0,0,145,0,0,0,94,4,0,0,242,1,0,0 }
+OPTFFF 12,62,1,0,0,0,0,0,<..\SDK\AD_DA\STM32ADC.c><STM32ADC.c> 
+OPTFFF 12,63,5,687865856,0,0,0,0,<..\SDK\AD_DA\STM32ADC.h><STM32ADC.h> 
+OPTFFF 13,64,1,0,0,0,0,0,<..\SDK\BSP\fsmc_nand.c><fsmc_nand.c> 
+OPTFFF 13,65,1,16777216,0,211,223,0,<..\SDK\Disk\Disk.c><Disk.c> { 44,0,0,0,0,0,0,0,1,0,0,0,255,255,255,255,255,255,255,255,252,255,255,255,226,255,255,255,66,0,0,0,87,0,0,0,50,4,0,0,184,1,0,0 }
+OPTFFF 13,66,5,352321536,0,0,0,0,<..\SDK\Disk\Disk.h><Disk.h> 
+OPTFFF 14,67,1,67108864,0,0,0,0,<..\SDK\DS18B20\DS18B20.c><DS18B20.c> 
+OPTFFF 14,68,5,436207616,0,0,0,0,<..\SDK\DS18B20\DS18B20.h><DS18B20.h> 
+
+ExtF <F:\公司文件\CortexM3 Project\uCOS-s\User\DataAcq.h> 76,82,0,{ 44,0,0,0,0,0,0,0,1,0,0,0,255,255,255,255,255,255,255,255,252,255,255,255,226,255,255,255,44,0,0,0,58,0,0,0,28,4,0,0,155,1,0,0 }
+ExtF <F:\公司文件\CortexM3 Project\uCOS-s\SDK\Bsp\Lights.h> 1,1,0,{ 44,0,0,0,0,0,0,0,1,0,0,0,255,255,255,255,255,255,255,255,252,255,255,255,226,255,255,255,66,0,0,0,87,0,0,0,50,4,0,0,184,1,0,0 }
+
+TARGOPT 1, (Z32R)
+ ADSCLK=12000000
+  OPTTT 1,1,1,0
+  OPTHX 1,65535,0,0,0
+  OPTLX 79,66,8,<.\APP\Output\>
+  OPTOX 16
+  OPTLT 1,1,1,0,1,1,0,1,0,0,0,0
+  OPTXL 1,1,1,1,1,1,1,0,0
+  OPTFL 1,0,1
+  OPTAX 255
+  OPTDL (SARMCM3.DLL)()(DARMSTM.DLL)(-pSTM32F103ZE)(SARMCM3.DLL)()(TARMSTM.DLL)(-pSTM32F103ZE)
+  OPTDBG 49150,7,()()()()()()()()()() (Segger\JL2CM3.dll)()()()
+  OPTKEY 0,(DLGUARM)((105=-1,-1,-1,-1,0)(106=-1,-1,-1,-1,0)(107=-1,-1,-1,-1,0))
+  OPTKEY 0,(JL2CM3)(-U68000019 -O14 -S0 -C0 -JU1 -JI-JP0 -JP0 -N00("ARM CoreSight JTAG-DP") -D00(3BA00477) -L00(0) -N01("Unknown JTAG device") -D01(06414041) -L01(0) -TO18 -TC10000000 -TP21 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -TB1 -TRE0 -FO7 -FD20000000 -FC800 -FN1 -FF0STM32F10x_512 -FS08000000 -FL080000)
+  OPTKEY 0,(DLGTARM)((1010=1035,100,1401,650,0)(1007=-1,-1,-1,-1,0)(1008=975,316,1341,545,0)(1009=1155,127,1389,668,0)(100=591,52,1227,718,0)(110=-1,-1,-1,-1,0)(111=-1,-1,-1,-1,0)(1011=885,74,1409,428,0)(180=-1,-1,-1,-1,0)(120=923,140,1334,538,0)(121=1001,158,1412,556,0)(122=1003,117,1414,515,0)(123=-1,-1,-1,-1,0)(124=501,3,912,401,0)(125=-1,-1,-1,-1,0)(126=-1,-1,-1,-1,0)(140=-1,-1,-1,-1,0)(240=812,154,1201,492,0)(190=-1,-1,-1,-1,0)(200=-1,-1,-1,-1,0)(170=-1,-1,-1,-1,0)(130=-1,-1,-1,-1,0)(131=-1,-1,-1,-1,0)(132=716,9,1300,696,0)(133=7,9,591,696,0)(160=165,205,603,612,0)(161=749,321,1187,728,0)(162=815,149,1253,556,0)(210=987,188,1304,542,0)(211=670,188,987,542,0)(220=-1,-1,-1,-1,0)(221=-1,-1,-1,-1,0)(230=-1,-1,-1,-1,0)(231=-1,-1,-1,-1,0)(232=-1,-1,-1,-1,0)(233=-1,-1,-1,-1,0)(150=-1,-1,-1,-1,0)(151=-1,-1,-1,-1,0))
+  OPTKEY 0,(DLGDARM)((1010=-1,-1,-1,-1,0)(1007=-1,-1,-1,-1,0)(1008=-1,-1,-1,-1,0)(1009=-1,-1,-1,-1,0)(100=78,53,714,719,0)(110=-1,-1,-1,-1,0)(111=-1,-1,-1,-1,0)(1011=-1,-1,-1,-1,0)(180=-1,-1,-1,-1,0)(120=-1,-1,-1,-1,0)(121=75,107,486,527,0)(122=-1,-1,-1,-1,0)(123=-1,-1,-1,-1,0)(124=-1,-1,-1,-1,0)(125=-1,-1,-1,-1,0)(126=-1,-1,-1,-1,0)(140=-1,-1,-1,-1,0)(240=-1,-1,-1,-1,0)(190=-1,-1,-1,-1,0)(200=-1,-1,-1,-1,0)(170=-1,-1,-1,-1,0)(130=-1,-1,-1,-1,0)(131=-1,-1,-1,-1,0)(132=373,79,957,823,0)(133=-1,-1,-1,-1,0)(160=-1,-1,-1,-1,0)(161=-1,-1,-1,-1,0)(162=-1,-1,-1,-1,0)(210=-1,-1,-1,-1,0)(211=-1,-1,-1,-1,0)(220=-1,-1,-1,-1,0)(221=-1,-1,-1,-1,0)(230=-1,-1,-1,-1,0)(234=-1,-1,-1,-1,0)(231=-1,-1,-1,-1,0)(232=-1,-1,-1,-1,0)(233=-1,-1,-1,-1,0)(150=-1,-1,-1,-1,0)(151=-1,-1,-1,-1,0))
+  OPTKEY 0,(ARMDBGFLAGS)(-T0)
+  OPTKEY 0,(UL2CM3)(-UU0589C6E -O14 -S0 -C0 -N00("ARM Cortex-M3") -D00(3BA00477) -L00(4) -N01("Unknown JTAG device") -D01(06414041) -L01(5) -FO23 -FD20000000 -FC800 -FN0)
+  OPTWA 0,1,(g_Dcb)
+  OPTWA 1,1,(fCltK)
+  OPTWA 2,1,(g_fMesureZeroVol)
+  OPTWA 3,1,(g_sMesureZero)
+  OPTWA 4,1,(nArrStaticDataSum)
+  OPTWA 5,1,(g_fEpValue)
+  OPTWA 6,1,(g_fADVolParam)
+  OPTWA 7,1,(g_fADStoreParam)
+  OPTWA 8,1,(buffCBApsRecv)
+  OPTWA 0,2,(g_TerminalParam)
+  OPTMM 1,8,(0x20005DA0)
+  OPTDF 0x82
+  OPTLE <>
+  OPTLC <>
+EndOpt
+
