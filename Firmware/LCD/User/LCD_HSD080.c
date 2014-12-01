@@ -1,9 +1,10 @@
 #include "includes.h"
+#include "CpuPortAccess.h"
 
 //signal defines--------------------------------------------------------------------------------------------------
 
 //****************************************************************************************************************
-static OS_EVENT 	*pLCDEvent;						    	//事件控制块
+//static OS_EVENT 	*pLCDEvent;						    	//事件控制块
 //static uint8 		nLCDErr;									//错误标志
 //static uint8 		bLCDignleLED = 0;						//错误标志
 //static uint16		nLCDTicksSpan;							//指示灯索引
@@ -65,7 +66,7 @@ void LCDInit() reentrant
 	SetLo(LCDENABLE);
 
 	//创建信号量
-	pLCDEvent = OSSemCreate(0);
+//	pLCDEvent = OSSemCreate(0);
 }
 
 /****************************************************************************
@@ -239,7 +240,7 @@ void LCDDisplayRed() reentrant
 ****************************************************************************/
 void PostLCD(uint16 nTicksSpan) reentrant
 {
-	OSSemPost(pLCDEvent);
+//	OSSemPost(pLCDEvent);
 }
 
 

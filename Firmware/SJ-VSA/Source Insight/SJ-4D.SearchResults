@@ -1,1 +1,30 @@
----- ver Matches (0 in 0 files) ----
+---- GPIO_Pin_5 Matches (29 in 13 files) ----
+Bsp.c (d:\lcdtestor\firmware\sj-vsa\bsp):	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
+Bsp.c (d:\lcdtestor\firmware\sj-vsa\bsp):	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5|GPIO_Pin_7;
+Bsp.c (d:\lcdtestor\firmware\sj-vsa\bsp):	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
+Bsp.c (d:\lcdtestor\firmware\sj-vsa\bsp):	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
+Bsp.c (d:\lcdtestor\firmware\sj-vsa\sdk\bsp):	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
+Bsp.c (d:\lcdtestor\firmware\sj-vsa\sdk\bsp):	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
+Bsp.c (d:\lcdtestor\firmware\sj-vsa\sdk\bsp):	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
+Bsp.h (d:\lcdtestor\firmware\sj-vsa\bsp):#define SetSCK() GPIO_SetBits(GPIOA,GPIO_Pin_5) 
+Bsp.h (d:\lcdtestor\firmware\sj-vsa\bsp):#define ClearSCK() GPIO_ResetBits(GPIOA,GPIO_Pin_5) 
+Bsp.h (d:\lcdtestor\firmware\sj-vsa\bsp):#define WaitTPReady() while(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_5)==0)
+Bsp.h (d:\lcdtestor\firmware\sj-vsa\sdk\bsp):#define SetSCK() GPIO_SetBits(GPIOA,GPIO_Pin_5) 
+Bsp.h (d:\lcdtestor\firmware\sj-vsa\sdk\bsp):#define ClearSCK() GPIO_ResetBits(GPIOA,GPIO_Pin_5) 
+Bsp.h (d:\lcdtestor\firmware\sj-vsa\sdk\bsp):#define WaitTPReady() while(GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_5)==0)
+Fsmc_nand.c (d:\lcdtestor\firmware\sj-vsa\sdk\bsp):                                 GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_4 | GPIO_Pin_5 | 
+Fsmc_nand.c (d:\lcdtestor\firmware\sj-vsa\user\src):                                 GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_4 | GPIO_Pin_5 | 
+Fsmc_sram.c (d:\lcdtestor\firmware\sj-vsa\user):                                GPIO_Pin_15 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_3 | GPIO_Pin_4;
+Fsmc_sram.c (d:\lcdtestor\firmware\sj-vsa\user):                                GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_12 | GPIO_Pin_13 | 
+Fsmc_sram.c (d:\lcdtestor\firmware\sj-vsa\user):                                GPIO_Pin_4 | GPIO_Pin_5;
+Fsmc_sram.c (d:\lcdtestor\firmware\sj-vsa\user):  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 |GPIO_Pin_5;
+Fsmc_sram.c (d:\lcdtestor\firmware\sj-vsa\user\src):                                GPIO_Pin_15 | GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_3 | GPIO_Pin_4;
+Fsmc_sram.c (d:\lcdtestor\firmware\sj-vsa\user\src):                                GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_12 | GPIO_Pin_13 | 
+Fsmc_sram.c (d:\lcdtestor\firmware\sj-vsa\user\src):                                GPIO_Pin_4 | GPIO_Pin_5;
+Fsmc_sram.c (d:\lcdtestor\firmware\sj-vsa\user\src):  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 |GPIO_Pin_5;
+SPI.h (d:\lcdtestor\firmware\sj-vsa\sdk\bsp):  #define SPI1_PIN_SCK           GPIO_Pin_5		//PA5
+SPI.h (d:\lcdtestor\firmware\sj-vsa\user\inc):  #define SPI1_PIN_SCK           GPIO_Pin_5		//PA5
+Spi_flash.h (d:\lcdtestor\firmware\sj-vsa\user):#define SPI_FLASH_PIN_SCK         GPIO_Pin_5
+Spi_flash.h (d:\lcdtestor\firmware\sj-vsa\user\inc):#define SPI_FLASH_PIN_SCK         GPIO_Pin_5
+Stm32f10x_gpio.h (d:\lcdtestor\firmware\sj-vsa\libraries\stm32f10x_stdperiph_driver\inc):#define GPIO_Pin_5                 ((uint16_t)0x0020)  /*!< Pin 5 selected */
+Stm32f10x_gpio.h (d:\lcdtestor\firmware\sj-vsa\libraries\stm32f10x_stdperiph_driver\inc):                              ((PIN) == GPIO_Pin_5) || \

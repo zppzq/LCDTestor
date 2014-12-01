@@ -10,6 +10,6 @@
 void LCDInit(void) reentrant;
 void PostLCD(uint16 nTicksSpan) reentrant;
 void LCDProcess(void) reentrant;
-
+void LCDDisplayRed(void);
 //****************************************************************************************************************
 #endif

@@ -345,7 +345,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_HD, USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Libraries\STM32F10x_StdPeriph_Driver\inc;E:\LCD;..\Libraries\CMSIS\Core\CM3;..\CortexM3;..\Prj;..\User;..\BSP</IncludePath>
+              <IncludePath>..\Libraries\STM32F10x_StdPeriph_Driver\inc;..\..\LCD;..\Libraries\CMSIS\Core\CM3;..\CortexM3;..\Prj;..\User;..\BSP</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>

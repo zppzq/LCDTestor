@@ -69,7 +69,7 @@ void  BSP_Init(void)
 		RCC_HCLKConfig(RCC_SYSCLK_Div1); 
 		
 		/* PCLK2 = HCLK */
-		RCC_PCLK2Config(RCC_HCLK_Div1); 
+		RCC_PCLK2Config(RCC_HCLK_Div1);
 		
 		/* PCLK1 = HCLK/2 */
 		RCC_PCLK1Config(RCC_HCLK_Div2);

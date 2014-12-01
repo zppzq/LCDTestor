@@ -44,10 +44,12 @@ int main(void)
 {
 	//不要再修改此函数，用户初始化内容请放在TaskStart函数里
 	BSP_Init();  											//硬件初始化
+	LCDInit();
+
 
 	while (1)
 	{
-		
+		LCDDisplayRed();
 	}
 }
 

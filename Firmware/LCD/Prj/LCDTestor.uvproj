@@ -440,6 +440,11 @@
               <FileType>1</FileType>
               <FilePath>..\BSP\Lights.c</FilePath>
             </File>
+            <File>
+              <FileName>LCD_HSD080.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\LCD_HSD080.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
