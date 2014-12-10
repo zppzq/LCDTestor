@@ -1,0 +1,8 @@
+*.rar
+*.a
+*.o
+*.iex
+*.htm
+*.crf
+*.uvgui*
+.gitignore

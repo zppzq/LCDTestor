@@ -52,8 +52,8 @@
 #define MakePushPull(bit)			SET_IO_ATTRI(bit##_PORT, bit, GPIO_PUSH_PULL_50M_OUTPUT)
 #define MakeOpenDrain(bit)			SET_IO_ATTRI(bit##_PORT, bit, GPIO_OPEN_DRAIN_50M_OUTPUT)
 
-#define SetHi(bit)					(bit##_PORT##->ODR) |= 1<<bit 
-#define SetLo(bit)					(bit##_PORT##->ODR) &= ~(1<<bit)
+#define SetHi(bit)					(bit##_PORT##->BSRR) = (1<<bit)
+#define SetLo(bit)					(bit##_PORT##->BRR)  = (1<<bit)
 
 #define GetSignal(bit)				(((bit##_PORT##->IDR & (1<<bit)) == 0x00)?0:1)	 
 

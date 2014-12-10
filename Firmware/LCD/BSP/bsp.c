@@ -88,7 +88,7 @@ void  BSP_Init(void)
 		RCC_PLLConfig(RCC_PLLSource_PREDIV1, RCC_PLLMul_9);
 		#else
 		/* PLLCLK = 8MHz * 9 = 72 MHz */
-		RCC_PLLConfig(RCC_PLLSource_HSE_Div1, RCC_PLLMul_6);
+		RCC_PLLConfig(RCC_PLLSource_HSE_Div1, RCC_PLLMul_16);
 		#endif
 		
 		/* Enable PLL */ 
@@ -158,7 +158,7 @@ void  BSP_Init(void)
 //	ADC_Configuration();
 
   /* Configure the systick */
-	SysTickConfig();         /* Initialize the uC/OS-II tick interrupt */
+//	SysTickConfig();         /* Initialize the uC/OS-II tick interrupt */
 
     /* Enable the FSMC that share a pin w/ I2C1 (LBAR) */
 //	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_FSMC, ENABLE);
