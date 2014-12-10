@@ -5,4 +5,13 @@
 *.htm
 *.crf
 *.uvgui*
+*.*Preview
+*.Zip
+*.zip
+*.txt
+history/
+*.NET
+*.LOG
+*.log
+*.PRJPCBStructure
 .gitignore
