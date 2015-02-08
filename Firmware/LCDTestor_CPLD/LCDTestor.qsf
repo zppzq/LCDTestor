@@ -1,0 +1,101 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 1991-2012 Altera Corporation
+# Your use of Altera Corporation's design tools, logic functions 
+# and other software and tools, and its AMPP partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Altera Program License 
+# Subscription Agreement, Altera MegaCore Function License 
+# Agreement, or other applicable license agreement, including, 
+# without limitation, that your use is for the sole purpose of 
+# programming logic devices manufactured by Altera and sold by 
+# Altera or its authorized distributors.  Please refer to the 
+# applicable agreement for further details.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus II 32-bit
+# Version 12.0 Build 178 05/31/2012 SJ Full Version
+# Date created = 23:00:11  December 17, 2014
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		LCDTestor_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Altera recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus II software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY "MAX II"
+set_global_assignment -name DEVICE EPM570T100C5
+set_global_assignment -name TOP_LEVEL_ENTITY LCDTestor
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 12.0
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "23:00:11  DECEMBER 17, 2014"
+set_global_assignment -name LAST_QUARTUS_VERSION 12.0
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name DEVICE_FILTER_PACKAGE TQFP
+set_global_assignment -name DEVICE_FILTER_PIN_COUNT 100
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR "-1"
+set_global_assignment -name POWER_EXT_SUPPLY_VOLTAGE_TO_REGULATOR 3.3V
+set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim (Verilog)"
+set_global_assignment -name EDA_TIME_SCALE "10 ns" -section_id eda_simulation
+set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "VERILOG HDL" -section_id eda_simulation
+set_global_assignment -name AUTO_RESTART_CONFIGURATION OFF
+set_global_assignment -name USE_CONFIGURATION_DEVICE ON
+set_global_assignment -name RESERVE_ALL_UNUSED_PINS "AS INPUT TRI-STATED"
+set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "3.3-V LVTTL"
+set_location_assignment PIN_12 -to clk
+set_location_assignment PIN_86 -to led
+set_global_assignment -name MISC_FILE "F:/CPLD/lesson6/LCDTestor/LCDTestor.dpf"
+set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -section_id eda_simulation
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH LCDTestor -section_id eda_simulation
+set_global_assignment -name EDA_TEST_BENCH_NAME LCDTestor -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id LCDTestor
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME LCDTestor_vlg_tst -section_id LCDTestor
+set_location_assignment PIN_87 -to led1
+set_location_assignment PIN_89 -to led3
+set_global_assignment -name EDA_TEST_BENCH_FILE simulation/modelsim/LCDTestor.vt -section_id LCDTestor
+set_global_assignment -name RESERVE_ALL_UNUSED_PINS_NO_OUTPUT_GND "AS INPUT TRI-STATED"
+set_location_assignment PIN_81 -to vga_r[0]
+set_location_assignment PIN_78 -to vga_r[1]
+set_location_assignment PIN_77 -to vga_r[2]
+set_location_assignment PIN_76 -to vga_r[3]
+set_location_assignment PIN_75 -to vga_r[4]
+set_location_assignment PIN_72 -to vga_r[5]
+set_location_assignment PIN_74 -to vga_r[6]
+set_location_assignment PIN_73 -to vga_r[7]
+set_location_assignment PIN_71 -to vga_g[0]
+set_location_assignment PIN_70 -to vga_g[1]
+set_location_assignment PIN_69 -to vga_g[2]
+set_location_assignment PIN_66 -to vga_g[3]
+set_location_assignment PIN_64 -to vga_g[4]
+set_location_assignment PIN_62 -to vga_g[5]
+set_location_assignment PIN_68 -to vga_g[6]
+set_location_assignment PIN_67 -to vga_g[7]
+set_location_assignment PIN_61 -to vga_b[0]
+set_location_assignment PIN_56 -to vga_b[1]
+set_location_assignment PIN_55 -to vga_b[2]
+set_location_assignment PIN_54 -to vga_b[3]
+set_location_assignment PIN_53 -to vga_b[4]
+set_location_assignment PIN_52 -to vga_b[5]
+set_location_assignment PIN_58 -to vga_b[6]
+set_location_assignment PIN_57 -to vga_b[7]
+set_location_assignment PIN_51 -to vga_hsy
+set_location_assignment PIN_50 -to vga_vsy
+set_location_assignment PIN_48 -to vga_de
+set_location_assignment PIN_49 -to vga_clk
+set_location_assignment PIN_92 -to key_in
+set_global_assignment -name VERILOG_FILE LCDTestor.v
+set_global_assignment -name VERILOG_FILE get_key.v
+set_global_assignment -name VERILOG_FILE key_neg_sig.v
